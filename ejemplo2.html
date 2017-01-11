@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+     <meta charset='utf-8'>
+     <title>Dias de un número de semana</title>
+	<script src='jquery.js'></script>
+	<script >
+
+	// Imprime en un console.log  los dias de la semana que se eligio en el select
+		
+		$(function()
+		{
+			
+			$("#fecha").on("change",function()
+			{
+
+				recorrerDiasDelAño();
+			});
+			
+			
+			//alert(semanaISO('02-01-2017'));
+			
+		});
+		
+		
+
+function recorrerDiasDelAño()
+{
+	
+			var semana = $("#fecha").val().split("W")[1];
+			semana = parseInt(semana);
+			semana = semana.toString();
+
+			var anio = $("#fecha").val().split("-")[0];
+
+			//var semana = '01';
+			//var anio = '2019'
+			
+			var fecha1=  "01/01/"+anio;
+			var fecha2 = "12/31/"+anio;
+			
+			
+			var start = new Date(fecha1);
+			var end = new Date(fecha2);
+			
+			var verificacion = '';
+
+			var cadenaFechas = '';
+			
+			var numeroSemanaCiclo ='';
+			
+			var primeraFechaSemana = '';
+			
+			var contador = 0;
+			
+			//debugger;
+			
+			while(start <= end)
+			{
+				
+				var arreglo = [];
+				
+				arreglo = start.toString().split(" ");
+			
+				var diaEnLetra = arreglo[0];
+				var mesEnLetra = arreglo[1];
+				var diaEnNumero = arreglo[2];
+				var anioEnumero = arreglo[3];
+				
+			
+				var mesEnNumero='';
+				
+				
+				
+				switch(mesEnLetra)
+				{
+					case 'Jan':
+								mesEnNumero = '01';
+								break;
+					case 'Feb':
+								mesEnNumero = '02';
+								break;
+					case 'Mar':
+								mesEnNumero = '03';
+								break;
+					case 'Apr':
+								mesEnNumero = '04';
+								break;				
+					case 'May':
+								mesEnNumero = '05';
+								break;				
+					case 'Jun':
+								mesEnNumero = '06';
+								break;			
+					case 'Jul':
+								mesEnNumero = '07';
+								break;			
+					case 'Aug':
+								mesEnNumero = '08';
+								break;	
+					case 'Sep':
+								mesEnNumero = '09';
+								break;
+					case 'Oct':
+								mesEnNumero = '10';
+								break;
+					case 'Nov':
+								mesEnNumero = '11';
+								break;
+					case 'Dec':
+								mesEnNumero = '12';
+								break;
+											
+								
+				
+				}
+				
+				fecha= diaEnNumero+'/'+mesEnNumero+'/'+anioEnumero;
+				
+				
+				//numeroSemanaCiclo = (select datename(week, dateadd(day,@contador,@fecha)));
+				
+				
+				dato = semanaISO(fecha)
+				
+				 numeroSemanaCiclo = dato.split("-")[0];
+				
+				
+				
+				
+				if(numeroSemanaCiclo == semana )
+				{
+					
+					
+					if(dato.split("-")[1]==anio)
+					{
+						cadenaFechas +=  fecha+" # ";
+						contador++;
+					}
+				
+					
+					
+					if(contador == 7)
+					{
+						fecha1=  "12/31/9999";
+						start = new Date(fecha1);
+					}
+					
+					
+				}
+				
+				
+				
+				
+
+				var newDate = start.setDate(start.getDate() + 1);
+				start = new Date(newDate);
+			}
+			
+			
+			
+			
+			var cadenaFechas2="";
+			
+			if(semana =='1')
+			{
+				var numDiasSemana=[];
+				
+				ArregloNumDiasSemana = cadenaFechas.split("#");
+				
+				var numDiasSemana = ArregloNumDiasSemana.length-1;
+				
+				if(numDiasSemana == 7)
+				{
+					console.log(cadenaFechas);
+				}
+				else
+				{
+					var numDiasFaltantesSemana = 7 - numDiasSemana;
+					var dia =0;
+					anio = parseInt(anio);
+					var anioAnterior = anio-1;
+					
+					for(x=0;x<numDiasFaltantesSemana;x++)
+					{
+						if(x==0)
+						{
+							dia=31;
+							dia=dia-(numDiasFaltantesSemana-1);
+							
+							cadenaFechas2 += dia+'/12/'+anioAnterior+" # ";
+							
+						}
+						else
+						{
+							dia= dia+1;
+							cadenaFechas2 += dia+'/12/'+anioAnterior+" # ";
+						}
+					}
+					
+					console.log(cadenaFechas2+cadenaFechas);
+				}
+				
+			
+			}
+			else
+			{
+				if(semana=='52' || semana =='53')
+				{
+					var numDiasSemana=[];
+				
+					ArregloNumDiasSemana = cadenaFechas.split("#");
+					
+					var numDiasSemana = ArregloNumDiasSemana.length-1;
+					
+					if(numDiasSemana == 7)
+					{
+						console.log(cadenaFechas);
+					}
+					else
+					{
+						var numDiasFaltantesSemana = 7 - numDiasSemana;
+						var dia =0;
+						var day="";
+						anio = parseInt(anio);
+						var anioSiguiente = anio+1;
+						
+						for(x=0;x<numDiasFaltantesSemana;x++)
+						{
+							if(x==0)
+							{
+								dia=1;
+								
+								//dia=dia-(numDiasFaltantesSemana-1);
+								
+								cadenaFechas2 += '01/01/'+anioSiguiente+" # ";
+								
+							}
+							else
+							{
+								dia = dia+1;
+								 
+								if(dia <=9)
+								{
+									day = '0'+dia;
+									cadenaFechas2 += day+'/01/'+anioSiguiente+" # ";
+								}
+								else
+								{
+									cadenaFechas2 += dia+'/01/'+anioSiguiente+" # ";
+								}
+								
+							}
+						}
+						
+						console.log(cadenaFechas+cadenaFechas2);
+						
+					}
+					
+				
+				}
+				else
+				{
+					console.log(cadenaFechas);
+				}
+			}
+
+			
+			//semanaISO();
+			
+
+}
+		
+function semanaISO($fecha){
+   
+   if($fecha.match(/\//)){
+      $fecha   =   $fecha.replace(/\//g,"-",$fecha); //Permite que se puedan ingresar formatos de fecha ustilizando el "/" o "-" como separador
+   };
+   
+   $fecha   =   $fecha.split("-"); //Dividimos el string de fecha en trozos (dia,mes,año)
+   $dia   =   eval($fecha[0]);
+   $mes   =   eval($fecha[1]);
+   $ano   =   eval($fecha[2]);
+   
+   if ($mes==1 || $mes==2){
+      //Cálculos si el mes es Enero o Febrero
+      $a   =   $ano-1;
+      $b   =   Math.floor($a/4)-Math.floor($a/100)+Math.floor($a/400);
+      $c   =   Math.floor(($a-1)/4)-Math.floor(($a-1)/100)+Math.floor(($a-1)/400);
+      $s   =   $b-$c;
+      $e   =   0;
+      $f   =   $dia-1+(31*($mes-1));
+   } else {
+      //Calculos para los meses entre marzo y Diciembre
+      $a   =   $ano;
+      $b   =   Math.floor($a/4)-Math.floor($a/100)+Math.floor($a/400);
+      $c   =   Math.floor(($a-1)/4)-Math.floor(($a-1)/100)+Math.floor(($a-1)/400);
+      $s   =   $b-$c;
+      $e   =   $s+1;
+      $f   =   $dia+Math.floor(((153*($mes-3))+2)/5)+58+$s;
+   };
+
+   //Adicionalmente sumándole 1 a la variable $f se obtiene numero ordinal del dia de la fecha ingresada con referencia al año actual.
+
+   //Estos cálculos se aplican a cualquier mes
+   $g   =   ($a+$b)%7;
+   $d   =   ($f+$g-$e)%7; //Adicionalmente esta variable nos indica el dia de la semana 0=Lunes, ... , 6=Domingo.
+   $n   =   $f+3-$d;
+   
+   if ($n<0){
+      //Si la variable n es menor a 0 se trata de una semana perteneciente al año anterior
+      $semana   =   53-Math.floor(($g-$s)/5);
+      $ano      =   $ano-1; 
+   } else if ($n>(364+$s)) {
+      //Si n es mayor a 364 + $s entonces la fecha corresponde a la primera semana del año siguiente.
+      $semana   = 1;
+      $ano   =   $ano+1;
+   } else {
+      //En cualquier otro caso es una semana del año actual.
+      $semana   =   Math.floor($n/7)+1;
+   };
+   
+   return $semana+"-"+$ano; //La función retorna una cadena de texto indicando la semana y el año correspondiente a la fecha ingresada   
+};
+
+
+		
+		
+	</script>
+</head>
+<body>
+
+
+<form action="action_page.php">
+  Select a week:
+  <input type="week" name="year_week" id='fecha'>
+</form>
+
+
+</body>
+</html>
+
